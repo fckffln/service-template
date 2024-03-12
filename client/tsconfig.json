@@ -25,7 +25,7 @@
       "@environments": ["../environments"]
     },
     "types": [
-      "types.d.ts"
+      "./types.d.ts"
     ]
   },
   "include": ["main.ts", "src", "vite.config.ts"]

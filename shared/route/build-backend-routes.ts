@@ -1,4 +1,5 @@
 import {SharedRoute, sharedRoutes} from "./index";
+import clone from "../data/clone";
 
 export enum PathResolve {
     Disabled = -1,
@@ -13,5 +14,5 @@ export type BackendSharedRoute = {
 } & Omit<SharedRoute, 'children'>;
 
 export default (routeFactory: (router: SharedRoute) => BackendSharedRoute) => {
-    return sharedRoutes.map((route) => routeFactory(route));
+    return clone(sharedRoutes).map((route) => routeFactory(route));
 }

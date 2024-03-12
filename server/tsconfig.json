@@ -16,7 +16,7 @@
       "@environments": ["../environments"]
     },
     "types": [
-      "types.d.ts"
+      "./types.d.ts"
     ]
   },
 }
