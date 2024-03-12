@@ -11,6 +11,7 @@ export type BackendSharedRoute = {
     pathResolution: (url: URL) => PathResolve;
     listener?: (request: Request, response: typeof Response, ...args: any[]) => Promise<any> | any | Promise<void> | void;
     debug?: boolean;
+    children?: BackendSharedRoute[];
 } & Omit<SharedRoute, 'children'>;
 
 export default (routeFactory: (router: SharedRoute) => BackendSharedRoute) => {

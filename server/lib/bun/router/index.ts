@@ -140,8 +140,21 @@ function parseCookies(cookiesHeader: string): { [key: string]: string } {
   return cookies;
 }
 
-export const createPath = (firstLine, ...path) => {
+const defaultCreatePathOptions = {
+  firstLine: '',
+  regExp: true,
+}
+
+export const createPath = (options, ...path): RegExp | string => {
+  let firstLine;
+  if (!options) options = defaultCreatePathOptions;
+  if (typeof options === 'string') {
+    firstLine = options;
+    options = defaultCreatePathOptions;
+  }
+  else firstLine = options.firstLine;
   let _path = [...(firstLine === '/' ? [] : [firstLine]), ...path]
+      ?.filter(Boolean)
       // @ts-ignore
       ?.map((path) => (Array.isArray(path) ? createPath(...path) : path)?.split('/'))
       ?.reduce((acc,path) => [...acc, ...path], [])
@@ -150,5 +163,12 @@ export const createPath = (firstLine, ...path) => {
       ?.replace(/http:\/\/|http:\/|http:/, 'http://')
       ?.replace(/https:\/\/|https:\/|https:/, 'https://')
       ?.replace(/ftp:\/\/|ftp:\/|ftp:/, 'ftp://');
-  return (firstLine === '/' ? firstLine : '') + (_path?.startsWith('/') ? _path?.splice(1) : _path);
+  let resPath = (firstLine === '/' ? firstLine : '') + (_path?.startsWith('/') ? _path?.splice(1) : _path);
+  if (resPath.includes('/:') && options.regExp) {
+    let ends = resPath.endsWith('/');
+    if (!ends) resPath = resPath + '/';
+    resPath = resPath.replace(/\/:(.*?)\//, '/(.*?)/');
+    return new RegExp(resPath, 'gm');
+  }
+  return resPath;
 }
