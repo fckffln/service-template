@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": [
+      "ESNext"
+    ],
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "moduleResolution": "NodeNext",
+    "paths": {
+      "@lib/*": ["./lib/*"],
+      "@shared/*": ["../shared/*"],
+      "@environments": ["../environments"]
+    },
+    "types": [
+      "types.d.ts"
+    ]
+  },
+}

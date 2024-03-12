@@ -1,0 +1,71 @@
+{
+    "root": true,
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "@typescript-eslint",
+        "prettier"
+    ],
+    "rules": {},
+    "overrides": [
+        {
+            "files": [
+                "*.ts", "*.tsx", "*.jsx", "*.js"
+            ],
+            "parserOptions": {
+                "project": "tsconfig.json",
+                "createDefaultProgram": true
+            },
+            "extends": [
+                "plugin:react/recommended", "plugin:prettier/recommended", "plugin:@typescript-eslint/recommended"
+            ],
+            "rules": {
+                "@typescript-eslint/no-unused-vars": "off",
+                "react/display-name": "off",
+                "prettier/prettier": ["error", {
+                    "endOfLine": "auto",
+                    "trailingComma": "all"
+                }],
+                "indent": ["error", "tab", { "SwitchCase": 1, "offsetTernaryExpressions": true }],
+                "react/react-in-jsx-scope": "off",
+                "react/prop-types": "off",
+                "@typescript-eslint/explicit-module-boundary-types": "off",
+                "no-useless-escape": 0,
+                "@typescript-eslint/no-explicit-any": "off",
+                "@typescript-eslint/ban-ts-comment": "off",
+                "no-case-declarations": "off"
+            }
+        },
+        {
+            "files": [
+                "*.html"
+            ],
+            "extends": [
+                "plugin:prettier/recommended"
+            ],
+            "rules": {}
+        }
+    ],
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    }
+}

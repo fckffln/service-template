@@ -1,0 +1,19 @@
+{
+  "exec": "bun build:client && bun run start:server",
+  "watch": [
+    "shared",
+    "client",
+    "server",
+    "environments",
+    "nodemon.json"
+  ],
+  "ext": "ts,js,json,jsx,tsx,html,css,sass,scss,less,htmx",
+  "ignore": [
+    "**/log.json",
+    "**/dist/*",
+    "client_modules",
+    "test",
+    "temp",
+    "node_modules"
+  ]
+}
