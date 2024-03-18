@@ -7,6 +7,7 @@ type Environment = {
     ssl?: boolean;
     mode: 'development' | 'production' | string;
     internalApi: string;
+    publicApi: string;
     externalApi: string;
     secret: string;
 }
@@ -17,6 +18,7 @@ export default {
     ssl: false,
     mode: 'development',
     internalApi: '/internal',
+    publicApi: '/api',
     externalApi: '/external',
     secret: 'input-your-secret-code',
     ...env,

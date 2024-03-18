@@ -8,6 +8,7 @@ import fileRouter from "../routes/file.router";
 import {PathResolve} from "@shared/route/build-backend-routes";
 import internal from "node:stream";
 import codePushRouter from "@lib/bun/routes/code-push.router";
+import metricRouter from "@lib/bun/routes/metric.router";
 
 type ServerOptions = {
     routers?: ((request: Request, response: typeof Response) => Promise<any>)[];
@@ -73,6 +74,7 @@ export default (options: ServerOptions = defaultOptions) => {
             return RouterController(request, Response)(
                 logRouter,
                 codePushRouter,
+                metricRouter,
                 (request, response) => RouterController(request, response)(
                 ...options.routers
                 // ...options.routers.toReversed()

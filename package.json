@@ -5,8 +5,6 @@
   "description": "Example service template application",
   "license": "MIT",
   "scripts": {
-    "preinstall": "environments/security/generate.zsh",
-    "postinstall": "bun build:client && bun build:server",
     "start:server": "bun run server/src/main.ts",
     "build:server": "bun build server/src/main.ts --compile",
     "start:client": "cd client && vite && cd ..",

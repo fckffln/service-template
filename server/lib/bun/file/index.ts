@@ -1,9 +1,6 @@
 import * as fs from "fs";
 import {RouterTools} from "../router";
-// @ts-ignore
-const {Mime} = await import("mime");
-const mimeTypes = [await import("mime/types/standard.js").then((m) => m.default), await import("mime/types/other.js").then((m) => m.default)];
-const mime = new Mime(...mimeTypes);
+import mime from "../mime";
 
 export const TryFiles = async (...paths: string[]): Promise<{content: any, type: string}> => {
     return new Promise(async (resolve, reject) => {

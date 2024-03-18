@@ -18,7 +18,7 @@ export class Controller {
     static from(_pack = './out.tar', _out = './out', force = false): Directory | null {
         const pack = path.resolve(_pack);
         const out = path.resolve(_out);
-        if (force) { // @ts-ignore
+        if (force && fs.existsSync(out)) { // @ts-ignore
             fs.rmdirSync(out, {recursive: true, force: true});
         }
         if (!fs.existsSync(pack)) {
@@ -45,7 +45,7 @@ export class Controller {
     static to(_dir = './', _out = './out.tar', force = false): Package | null {
         const dir = path.resolve(_dir);
         const out = path.resolve(_out);
-        if (force) fs.rmSync(out);
+        if (force && fs.existsSync(out)) fs.rmSync(out);
         if (!fs.existsSync(dir)) {
             console.error(`Директория ${dir} не найдена.`);
             return null;
@@ -73,13 +73,3 @@ export class Controller {
         return res ? new Package(out) : null;
     }
 }
-
-// // Example Usage
-// const clientDir = new Directory('client');
-// console.log(clientDir);
-// const clientZip = clientDir.package('server/lib/package/output.zip');
-// console.log(clientZip);
-// const clientOutput = clientZip.extract('server/lib/package/output');
-// console.log(clientOutput);
-// // clientZip.remove();
-// // clientOutput.remove();
