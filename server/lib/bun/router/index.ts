@@ -85,7 +85,7 @@ export const Router = (options?: RouterOptions) => {
           log('request has error:', requestName);
           error(e);
         }
-        return e;
+        throw e;
       }
     }
     return res;
@@ -109,34 +109,19 @@ export default Router;
 function parseCookies(cookiesHeader: string): { [key: string]: string } {
   const cookies: { [key: string]: string } = {};
   const pairs = cookiesHeader.split(/; */);
-
   for (const pair of pairs) {
-    // Пытаемся найти первый символ '=', который разделяет имя и значение куки
     const eqIdx = pair.indexOf('=');
-
-    // Если '=' не найден, пропускаем пару
     if (eqIdx === -1) continue;
-
-    // Извлекаем имя и значение, декодируем значение из URL-кодировки
     const key = pair.substr(0, eqIdx).trim();
     let value = pair.substr(eqIdx + 1, pair.length).trim();
-
-    // Удаляем кавычки вокруг значения, если они есть
     if (value[0] === '"' && value[value.length - 1] === '"') {
       value = value.slice(1, -1);
     }
-
     try {
-      // Декодируем значение куки, если оно было закодировано с помощью encodeURIComponent
       value = decodeURIComponent(value);
-    } catch (e) {
-      // Если декодирование не удалось, используем исходное значение
-    }
-
-    // Добавляем куку в объект
+    } catch (e) {}
     cookies[key] = value;
   }
-
   return cookies;
 }
 

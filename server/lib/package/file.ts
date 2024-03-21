@@ -27,55 +27,33 @@ export class File {
             }
             else {
                 externalFiles.delete(this.path);
-                const tempExecutor = new File(`temp/system/executor/${randomUUID()}.js`);
-                tempExecutor.write(`
-                new Promise((resolve, reject) => {
-                    const control = new AbortController();
-                    try {
-                        fetch('${this.path}', {signal: control.signal, cache: 'no-cache'})
-                        .then(async (data) => ({data: await data.text(), type: data.headers.get('Content-type')})).then((response) => {
-                            resolve(JSON.stringify(response));
-                        });
-                    }
-                    catch (e) {}
-                    setTimeout(() => {
-                        control.abort('timeout');
-                        resolve({});
-                    }, 15000);
-                }).then((data) => {
-                    console.log(data);
-                    process.exit(0);
-                });
-            `);
-                const execute = (): string => {
+                const execute = (): object => {
+                    console.log(`Downloading from ${this.path}...`)
                     let iteration = 0;
-                    let res = '';
-                    while (iteration <= 10 && res?.length && res !== '{}') {
+                    let res: any;
+                    while (iteration <= 10 && !res) {
                         iteration++;
-                        let executor = Bun.spawnSync(['bun', 'run', tempExecutor.path]);
-                        let res = Buffer.from(executor.stdout).toString();
+                        let executor = Bun.spawnSync(['curl', '-i', this.path]);
+                        res = Buffer.from(executor.stdout).toString();
                         let err = Buffer.from(executor.stderr).toString();
                         if (!res?.length) {
                             if (iteration === 10) throw new Error(err);
                             else console.error(err);
                         }
-                    }
-                    while (!res.startsWith('{') || !res.endsWith('}')) {
-                        if (!res.startsWith('{')) res = res.slice(1);
-                        if (!res.endsWith('}')) res = res.slice(0, -1);
+                        else {
+                            const contentType = /\r\ncontent-type: (.*?)\r/gm;
+                            const dataStart = /\r\n(.*?)\r\n\r[\s\S]*/gm;
+                            const dataEnd = /\r\n\r[\s\S]*/gm;
+                            res = {
+                                type: contentType.exec(res)[1],
+                                data: dataEnd.exec(dataStart.exec(res)[0])[0],
+                            };
+                        }
                     }
                     return res;
                 }
                 let res = execute();
-                try {
-                    console.log(JSON.parse(res));
-                }
-                catch (e) {
-                    console.log(res);
-                    console.error(e);
-                }
-                let response = JSON.parse(res ?? '{}') ?? {};
-                response = {data: '', type: undefined, ...response};
+                let response = {data: '', type: undefined, ...(res || {})};
                 let ext = '';
                 if (response?.type) ext = mime.getExtension(response?.type);
                 let pathname = `temp/download/${randomUUID()}${ext ? `.${ext}` : ''}`;
@@ -83,7 +61,6 @@ export class File {
                 externalFiles.set(this.path, path.resolve(pathname));
                 (this as any).path = pathname;
                 _init();
-                tempExecutor.remove();
             }
         }
         else _init();

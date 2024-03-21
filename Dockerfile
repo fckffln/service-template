@@ -22,7 +22,7 @@ RUN ./install.sh
 FROM ubuntu:22.04
 
 RUN apt-get update && \
-    apt-get install -y nginx tar zip unzip && \
+    apt-get install -y nginx tar zip unzip curl && \
     rm -rf /var/lib/apt/lists/*
 
 # Создаем директорию для PID файла и логов Nginx

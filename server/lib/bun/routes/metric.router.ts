@@ -22,8 +22,8 @@ const ClientMetricRouter = (type: 'public' | 'internal') => Router({key: 'Client
 
 const ViewMetricRouter = Router({key: 'Client View', pathResolver: (url) => url.pathname === createPath('/', environment.internalApi, 'metric', 'view') ? PathResolve.Root : PathResolve.Disabled, callback: async (request, response, tools) => {
         if (request.method === 'GET') {
-            let html = new File('server/lib/bun/metric/view/index.html').read().toString();
-            let js = new Code('server/lib/bun/metric/view/main.ts').build();
+            let html = new File('assets/views/metric/index.html').read().toString();
+            let js = new Code('assets/views/metric/main.ts').build();
             js = `window.exports={};window.metricPath='${createPath("/", environment.internalApi, 'metric', 'client')}';` + js;
             html = html.replace('// script replacement', js);
             return new response(html, {headers: {'Content-Type': 'text/html'}});

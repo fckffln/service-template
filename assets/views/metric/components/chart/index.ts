@@ -86,10 +86,10 @@ function listener(api: string) {
 
 export class ChartComponent extends HTMLElement {
     public readonly data = {title: '', key: ''};
-    #shadow: ShadowRoot;
+    private readonly shadow: ShadowRoot;
     constructor() {
         super();
-        this.#shadow = this.attachShadow({ mode: 'closed' });
+        this.shadow = this.attachShadow({ mode: 'closed' });
         this.fetchAndRenderChart();
     }
 
@@ -105,10 +105,10 @@ export class ChartComponent extends HTMLElement {
 
     listener() {
         this.construct();
-        let ctx = this.#shadow.querySelector('canvas');
+        let ctx = this.shadow.querySelector('canvas');
         if (ctx) ctx.remove();
         ctx = document.createElement('canvas');
-        this.#shadow.append(ctx);
+        this.shadow.append(ctx);
         const Chart = getChart();
         new Chart(ctx, {
             type: 'line',
