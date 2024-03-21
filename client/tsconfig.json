@@ -22,7 +22,7 @@
     "paths": {
       "@lib/*": ["./lib/*"],
       "@shared/*": ["../shared/*"],
-      "@environments": ["../environments"]
+      "@environments": ["../environments/index.ts"]
     },
     "types": [
       "./types.d.ts"

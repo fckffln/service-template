@@ -46,7 +46,7 @@ export default defineConfig((() => {
 		build: {
 			chunkSizeWarningLimit: 5000,
 			emptyOutDir: true,
-			outDir: '../client_modules'
+			outDir: '../client_modules',
 		},
 	};
 }) as any);

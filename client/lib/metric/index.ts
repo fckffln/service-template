@@ -1,4 +1,5 @@
 import {ClientMetricData} from "@shared/types/metric";
+import environment from "../../../environments";
 
 let errorsCount = 0;
 let clicksCount = 0;
@@ -89,7 +90,7 @@ const getMetricData = () => {
 }
 
 const sendData = () => {
-    originalFetch('/api/metric/client', {
+    originalFetch(`${environment.publicApi}/metric/client`, {
         method: 'POST',
         body: JSON.stringify(getMetricData()),
     }).then(console.log);

@@ -18,7 +18,7 @@ const ClientMetricRouter = (type: 'public' | 'internal') => Router({key: 'Client
                 result: getClientMetricDataByServer(),
             }), {headers: {'Content-type': 'application/json'}});
         }
-    }});
+    }, debug: true});
 
 const ViewMetricRouter = Router({key: 'Client View', pathResolver: (url) => url.pathname === createPath('/', environment.internalApi, 'metric', 'view') ? PathResolve.Root : PathResolve.Disabled, callback: async (request, response, tools) => {
         if (request.method === 'GET') {
@@ -28,14 +28,14 @@ const ViewMetricRouter = Router({key: 'Client View', pathResolver: (url) => url.
             html = html.replace('// script replacement', js);
             return new response(html, {headers: {'Content-Type': 'text/html'}});
         }
-}});
+}, debug: true});
 
 const InternalRouter = Router({key: 'Internal', pathResolver: (url) => url.pathname.startsWith(createPath('/', environment.internalApi, 'metric') as string) ? PathResolve.Child : PathResolve.Disabled, callback: async (request, response, tools) => {
     return RouterController(request, response)(ClientMetricRouter('internal'), ViewMetricRouter);
-}, debug: false});
+}});
 const PublicRouter = Router({key: 'Public', pathResolver: (url) => url.pathname.startsWith(createPath('/', environment.publicApi, 'metric') as string) ? PathResolve.Child : PathResolve.Disabled, callback: async (request, response, tools) => {
     return RouterController(request, response)(ClientMetricRouter('public'));
-}, debug: false});
+}});
 
 export default Router({
     key: 'Metric',
@@ -46,5 +46,4 @@ export default Router({
     callback: async (request, response, tools) => {
         return RouterController(request, response)(InternalRouter, PublicRouter);
     },
-    debug: true,
 });

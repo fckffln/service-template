@@ -18,7 +18,7 @@ export default {
     ssl: false,
     mode: 'development',
     internalApi: '/internal',
-    publicApi: '/api',
+    publicApi: '/app/api',
     externalApi: '/external',
     secret: 'input-your-secret-code',
     ...env,

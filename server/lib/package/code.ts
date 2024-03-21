@@ -51,6 +51,7 @@ export class Code {
                         return '';
                     }
                 }
+                console.error(path.resolve(_path));
                 console.error('[Code Builder] file is undefined by path:', _path);
                 return '';
             }
