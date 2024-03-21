@@ -13,9 +13,11 @@ const routeFactory = (route: SharedRoute, parentPathname = undefined): BackendSh
                 key: route.key,
                 pathResolution: (url) => {
                     const path = createPath('/', parentPathname, route.path);
-                    if (path instanceof RegExp) {
+                    if (path instanceof RegExp && typeof path !== 'string') {
                         const pathname = url.pathname.endsWith('/') ? url.pathname : url.pathname + '/';
-                        return pathname.match(path)[0] === pathname ? PathResolve.Root : PathResolve.Disabled;
+                        const match = pathname.match(path);
+                        if (!match?.length) return PathResolve.Disabled;
+                        return match[0] === pathname ? PathResolve.Root : PathResolve.Disabled;
                     }
                     return (url.pathname === path || url.pathname === (path + '/')) ? PathResolve.Root : PathResolve.Disabled;
                 },
