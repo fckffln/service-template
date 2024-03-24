@@ -1,0 +1,7 @@
+{
+  "customSyntax": "postcss-sass",
+  "plugins": ["stylelint-prettier"],
+  "rules": {
+    "indentation": "tab"
+  }
+}
